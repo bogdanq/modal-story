@@ -41,10 +41,12 @@ const rollinIn = keyframes`
 
 const animationCustomStyle = {
   rollin: css`
-    animation-name: ${({ isAnimated }) => (isAnimated ? rollinIn : scaleOut)};
+    border: 1px solid red;
+    animation-name: ${({ isAnimated }) => (isAnimated ? zoomIn : scaleOut)};
   `,
   zoom: css`
-    animation-name: ${({ isAnimated }) => (isAnimated ? zoomIn : scaleOut)};
+    border: 1px solid red;
+    animation-name: ${({ isAnimated }) => (isAnimated ? rollinIn : scaleOut)};
   `,
 };
 
@@ -76,17 +78,24 @@ const Component = () => {
   const { showModal } = React.useContext(ModalContext);
   const [modalNames] = React.useState(["rollin", "zoom"]);
 
-  return modalNames.map(animation => (
-    <Button
-      onClick={() =>
-        showModal(params => (
-          <ModalForCustomAnimate {...params} customAnimationName={animation} />
-        ))
-      }
-    >
-      open modal ({animation})
-    </Button>
-  ));
+  return (
+    <>
+      {modalNames.map(animation => (
+        <Button
+          onClick={() =>
+            showModal(params => (
+              <ModalForCustomAnimate
+                {...params}
+                customAnimationName={animation}
+              />
+            ))
+          }
+        >
+          open modal ({animation})
+        </Button>
+      ))}
+    </>
+  );
 };
 
 storiesOf("Modals", module).add("modal with custom animations", () => (
