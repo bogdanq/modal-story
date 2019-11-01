@@ -9,7 +9,7 @@ const req = require.context("../src", true, /\.stories\.(js|mdx)$/);
 addDecorator(withPropsTable);
 addDecorator(storyFn => (
   <ModalRootProvider>
-    {<>{storyFn()}</>}
+    {storyFn()}
     <GlobalStyle />
   </ModalRootProvider>
 ));
