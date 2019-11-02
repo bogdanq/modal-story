@@ -1,13 +1,13 @@
-import React from "react";
-import { Button } from "@storybook/react/demo";
-import { storiesOf } from "@storybook/react";
-import { withInfo } from "@storybook/addon-info";
-import { ModalContext, Modal } from "context-react-modal";
-import { propTypes } from "../options/props-config";
-import { CommonTemplate } from "../templates/common-modal";
+import React from 'react'
+import { Button } from '@storybook/react/demo'
+import { storiesOf } from '@storybook/react'
+import { withInfo } from '@storybook/addon-info'
+import { ModalContext, Modal } from 'context-react-modal'
+import { propTypes } from '../options/props-config'
+import { CommonTemplate } from '../templates/common-modal'
 
-const DefaultModal = () => {
-  const { showModal } = React.useContext(ModalContext);
+const BaseComponent = () => {
+  const { showModal } = React.useContext(ModalContext)
 
   return (
     <CommonTemplate>
@@ -21,27 +21,28 @@ const DefaultModal = () => {
         open modal
       </Button>
     </CommonTemplate>
-  );
-};
+  )
+}
 
-DefaultModal.__docgenInfo = {
+BaseComponent.__docgenInfo = {
   props: propTypes,
-};
+}
 
-DefaultModal.defaultProps = {};
-
-storiesOf("Modals", module).add(
-  "default modal",
+storiesOf('Modals', module).add(
+  'default modal',
   withInfo({
     inline: true,
-  })(() => <DefaultModal />),
+  })(() => <BaseComponent />),
   {
     info: {
-      propTables: null,
+      source: false,
       text: `
         #### - Usage
         ~~~jsx
-        const DefaultModal = () => {
+        import React from 'react'
+        import { ModalContext, Modal } from 'context-react-modal'
+
+        const BaseComponent = () => {
           const { showModal } = React.useContext(ModalContext);
         
           return (
@@ -58,4 +59,4 @@ storiesOf("Modals", module).add(
         `,
     },
   },
-);
+)

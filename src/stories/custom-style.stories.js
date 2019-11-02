@@ -1,10 +1,10 @@
-import React from "react";
-import { Button } from "@storybook/react/demo";
-import { storiesOf } from "@storybook/react";
-import { withInfo } from "@storybook/addon-info";
-import styled, { css } from "styled-components";
-import { ModalContext, Modal } from "context-react-modal";
-import { propTypes } from "../options/props-config";
+import React from 'react'
+import { Button } from '@storybook/react/demo'
+import { storiesOf } from '@storybook/react'
+import { withInfo } from '@storybook/addon-info'
+import styled, { css } from 'styled-components'
+import { ModalContext, Modal } from 'context-react-modal'
+import { propTypes } from '../options/props-config'
 
 const style = css`
   background: #fff;
@@ -16,7 +16,7 @@ const style = css`
   position: absolute;
   top: 0;
   right: 0;
-`;
+`
 
 export const ModalForCustomStyle = ({ customStyle, ...params }) => {
   return (
@@ -32,11 +32,11 @@ export const ModalForCustomStyle = ({ customStyle, ...params }) => {
         </>
       )}
     </Modal>
-  );
-};
+  )
+}
 
-const SomeRootComponent = ({ customStyle }) => {
-  const { showModal } = React.useContext(ModalContext);
+const BaseComponent = ({ customStyle }) => {
+  const { showModal } = React.useContext(ModalContext)
 
   return (
     <Button
@@ -48,49 +48,36 @@ const SomeRootComponent = ({ customStyle }) => {
     >
       open modal style
     </Button>
-  );
-};
+  )
+}
 
-SomeRootComponent.__docgenInfo = {
+BaseComponent.__docgenInfo = {
   props: {
     ...propTypes,
     customStyle: {
       type: {
-        name: "FlattenInterpolation (from styled)",
+        name: 'customStyle?: FlattenInterpolation (from styled)',
       },
       required: false,
-      description: `your custom style. For example: \n css\`${style}\``,
+      description: `your custom style. \n For example: \n css\`${style}\``,
     },
   },
-};
+}
 
-SomeRootComponent.defaultProps = {};
-
-storiesOf("Modals", module).add(
-  "custom modal style",
+storiesOf('Modals', module).add(
+  'custom modal style',
   withInfo({
     inline: true,
-  })(() => <SomeRootComponent customStyle={"your style"} />),
+  })(() => <BaseComponent customStyle={'your style'} />),
   {
     info: {
-      propTables: null,
+      source: false,
       text: `
         #### - Usage
         ~~~jsx
-        const SomeRootComponent = () => {
-          const { showModal } = React.useContext(ModalContext);
-        
-          return (
-            <Button
-              onClick={() => showModal(params => <ModalForCustomStyle {...params} />)}
-            >
-              open modal style
-            </Button>
-          );
-        };
-        ~~~
-        #### - You can use your custom Modal wrapper - component (ModalForCustomStyle)
-        ~~~jsx
+        import React from 'react'
+        import { ModalContext, Modal } from 'context-react-modal'
+
         const ModalForCustomStyle = ({ ...params }) => {
           return (
             <Modal {...params} style={customStyle}>
@@ -107,11 +94,23 @@ storiesOf("Modals", module).add(
             </Modal>
           );
         };
+
+        const BaseComponent = () => {
+          const { showModal } = React.useContext(ModalContext);
+        
+          return (
+            <Button
+              onClick={() => showModal(params => <ModalForCustomStyle {...params} />)}
+            >
+              open modal style
+            </Button>
+          );
+        };
         ~~~
       `,
     },
   },
-);
+)
 
 export const ButtonStyle = styled.div`
   position: absolute;
@@ -132,7 +131,7 @@ export const ButtonStyle = styled.div`
   font-size: 2.5em;
   line-height: 1.2;
   cursor: pointer;
-`;
+`
 
 export const Header = styled.div`
   background: #00c851;
@@ -141,10 +140,10 @@ export const Header = styled.div`
   font-size: 1.5rem;
   text-align: center;
   margin-bottom: 25px;
-`;
+`
 
 export const Text = styled.div`
   color: #616161;
   width: 90%;
   margin: 0 auto;
-`;
+`

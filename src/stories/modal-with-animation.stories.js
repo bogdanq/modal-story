@@ -1,9 +1,9 @@
-import React from "react";
-import { Button } from "@storybook/react/demo";
-import { storiesOf } from "@storybook/react";
-import { withInfo } from "@storybook/addon-info";
-import { ModalContext, Modal } from "context-react-modal";
-import { propTypes } from "../options/props-config";
+import React from 'react'
+import { Button } from '@storybook/react/demo'
+import { storiesOf } from '@storybook/react'
+import { withInfo } from '@storybook/addon-info'
+import { ModalContext, Modal } from 'context-react-modal'
+import { propTypes } from '../options/props-config'
 
 const ModalForAnimation = ({ animationName, ...params }) => {
   return (
@@ -18,21 +18,21 @@ const ModalForAnimation = ({ animationName, ...params }) => {
         </div>
       )}
     </Modal>
-  );
-};
+  )
+}
 
 const modalNames = [
-  "scale",
-  "translate",
-  "rotate",
-  "jackIn",
-  "rubber",
-  "swing",
-  "rollin",
-];
+  'scale',
+  'translate',
+  'rotate',
+  'jackIn',
+  'rubber',
+  'swing',
+  'rollin',
+]
 
-const RootComponent = () => {
-  const { showModal } = React.useContext(ModalContext);
+const BaseComponent = () => {
+  const { showModal } = React.useContext(ModalContext)
 
   return (
     <>
@@ -48,38 +48,40 @@ const RootComponent = () => {
         </Button>
       ))}
     </>
-  );
-};
+  )
+}
 
-RootComponent.__docgenInfo = {
+BaseComponent.__docgenInfo = {
   props: {
     ...propTypes,
     animationName: {
       type: {
-        name: modalNames.map(name => `${name}, `),
+        name: `animationName?: ${modalNames.map(name => ` ${name}`)}`,
       },
       required: false,
-      description: "animation name",
+      description: 'animation name',
+      defaultValue: {
+        value: 'translate',
+      },
     },
   },
-};
+}
 
-RootComponent.defaultProps = {
-  animationName: "translate",
-};
-
-storiesOf("Modals", module).add(
-  "modal with animation",
+storiesOf('Modals', module).add(
+  'modal with animation',
   withInfo({
     inline: true,
-  })(() => <RootComponent />),
+    source: false,
+  })(() => <BaseComponent />),
   {
     info: {
-      propTables: null,
       text: `
         #### - Usage 
         ~~~jsx
-        const RootComponent = ({ animationName }) => {
+        import React from 'react'
+        import { ModalContext, Modal } from 'context-react-modal'
+
+        const BaseComponent = ({ animationName }) => {
           const { showModal } = React.useContext(ModalContext);
           return (
             <Button
@@ -115,4 +117,4 @@ storiesOf("Modals", module).add(
         `,
     },
   },
-);
+)
