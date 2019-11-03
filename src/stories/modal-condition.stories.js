@@ -14,25 +14,33 @@ const BaseComponent = () => {
     if (currentNumber > 18) {
       return true
     }
+
     return false
   }, [currentNumber])
 
   return (
-    <CommonTemplate>
+    <CommonTemplate title='Demo'>
       <p>
         You can pass a function with any condition, but function must return
         bool
       </p>
+
       <input
         value={currentNumber}
         onChange={e => setNumber(e.target.value)}
         placeholder='number must be greater than 18'
       />
+
       <Button
         onClick={() =>
-          showModal(params => (
-            <Modal {...params} condition={getNumber}>
-              {() => <div>You number: {currentNumber}</div>}
+          showModal(props => (
+            <Modal {...props} condition={getNumber}>
+              {({ closeModal }) => (
+                <>
+                  <h1>You number: {currentNumber}</h1>
+                  <Button onClick={closeModal}>Close modal</Button>
+                </>
+              )}
             </Modal>
           ))
         }
@@ -58,7 +66,7 @@ BaseComponent.__docgenInfo = {
 }
 
 storiesOf('Modals', module).add(
-  'modal condition',
+  'modal with condition',
   withInfo({
     inline: true,
   })(() => <BaseComponent />),
@@ -66,7 +74,7 @@ storiesOf('Modals', module).add(
     info: {
       source: false,
       text: `
-        #### - Usage
+        ## - Usage
         ~~~jsx
         import React from 'react'
         import { ModalContext, Modal } from 'context-react-modal'
@@ -79,27 +87,40 @@ storiesOf('Modals', module).add(
             if (currentNumber > 18) {
               return true
             }
+        
             return false
           }, [currentNumber])
         
           return (
-            <CommonTemplate>
+            <>
+              <p>
+                You can pass a function with any condition, but function must return
+                bool
+              </p>
+        
               <input
                 value={currentNumber}
                 onChange={e => setNumber(e.target.value)}
+                placeholder='number must be greater than 18'
               />
-              <Button
+        
+              <button
                 onClick={() =>
-                  showModal(params => (
-                    <Modal {...params} condition={getNumber}>
-                      {() => <div>You number: {currentNumber}</div>}
+                  showModal(props => (
+                    <Modal {...props} condition={getNumber}>
+                      {({ closeModal }) => (
+                        <>
+                          <h1>You number: {currentNumber}</h1>
+                          <button onClick={closeModal}>Close modal</button>
+                        </>
+                      )}
                     </Modal>
                   ))
                 }
               >
                 open modal
-              </Button>
-            </CommonTemplate>
+              </button>
+            </>
           )
         }
         ~~~

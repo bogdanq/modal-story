@@ -4,12 +4,18 @@ import { storiesOf } from '@storybook/react'
 import { withInfo } from '@storybook/addon-info'
 import { ModalContext, Modal } from 'context-react-modal'
 import { propTypes } from '../options/props-config'
+import { CommonTemplate } from '../templates/common-modal'
 
-const ModalWrapper = ({ closeTimeout, ...params }) => {
+const ModalWrapper = ({ closeTimeout, ...props }) => {
   return (
-    <Modal closeTimeout={closeTimeout} {...params}>
-      {() => {
-        return <h1>Close timeout modal</h1>
+    <Modal closeTimeout={closeTimeout} {...props}>
+      {({ closeModal }) => {
+        return (
+          <>
+            <h1>Close timeout modal</h1>
+            <Button onClick={closeModal}>Close</Button>
+          </>
+        )
       }}
     </Modal>
   )
@@ -19,15 +25,20 @@ const BaseComponent = () => {
   const { showModal } = React.useContext(ModalContext)
   const timers = [400, 1000, 1500, 2000]
 
-  return timers.map(time => (
-    <Button
-      onClick={() =>
-        showModal(params => <ModalWrapper closeTimeout={time} {...params} />)
-      }
-    >
-      Open {time}ms
-    </Button>
-  ))
+  return (
+    <CommonTemplate title='Demo'>
+      {timers.map(time => (
+        <Button
+          key={time}
+          onClick={() =>
+            showModal(props => <ModalWrapper closeTimeout={time} {...props} />)
+          }
+        >
+          Open {time}ms
+        </Button>
+      ))}
+    </CommonTemplate>
+  )
 }
 
 BaseComponent.__docgenInfo = {
@@ -55,16 +66,21 @@ storiesOf('Modals', module).add(
     info: {
       source: false,
       text: `
-        #### - Usage
+        ## - Usage
         ~~~jsx
         import React from 'react'
         import { ModalContext, Modal } from 'context-react-modal'
 
-        const ModalWrapper = ({ closeTimeout, ...params }) => {
+        const ModalWrapper = ({ closeTimeout, ...props }) => {
           return (
-            <Modal closeTimeout={closeTimeout} {...params}>
-              {() => {
-                return <h1>Modal number</h1>
+            <Modal closeTimeout={closeTimeout} {...props}>
+              {({ closeModal }) => {
+                return (
+                  <>
+                    <h1>Close timeout modal</h1>
+                    <button onClick={closeModal}>Close</button>
+                  </>
+                )
               }}
             </Modal>
           )
@@ -74,13 +90,13 @@ storiesOf('Modals', module).add(
           const { showModal } = React.useContext(ModalContext)
         
           return (
-            <Button
+            <button
               onClick={() =>
-                showModal(params => <ModalWrapper closeTimeout={2000} {...params} />)
+                showModal(props => <ModalWrapper closeTimeout={2000} {...props} />)
               }
             >
               Open
-            </Button>
+            </button>
           )
         }
         ~~~

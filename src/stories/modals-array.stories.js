@@ -1,15 +1,20 @@
 import React from 'react'
+import { Button } from '@storybook/react/demo'
 import { storiesOf } from '@storybook/react'
 import { withInfo } from '@storybook/addon-info'
 import { ModalContext, Modal } from 'context-react-modal'
 import { propTypes } from '../options/props-config'
+import { CommonTemplate } from '../templates/common-modal'
 
-const ModalWrapper = ({ ...params }) => {
+const ModalWrapper = ({ ...props }) => {
   return (
-    <Modal {...params}>
-      {() => {
-        return <h1>Modal number: {params.id}</h1>
-      }}
+    <Modal {...props}>
+      {({ closeModal }) => (
+        <>
+          <h1>Modal number: {props.id}</h1>
+          <Button onClick={closeModal}>Close</Button>
+        </>
+      )}
     </Modal>
   )
 }
@@ -18,12 +23,16 @@ const BaseComponent = () => {
   const { showModal } = React.useContext(ModalContext)
   React.useEffect(() => {
     showModal([
-      params => <ModalWrapper {...params} />,
-      params => <ModalWrapper {...params} />,
+      props => <ModalWrapper {...props} />,
+      props => <ModalWrapper {...props} />,
     ])
   }, [showModal])
 
-  return <>You base component. Show modals in componentDidMount methoods</>
+  return (
+    <CommonTemplate>
+      You can show modals in componentDidMount methood
+    </CommonTemplate>
+  )
 }
 
 BaseComponent.__docgenInfo = {
@@ -39,17 +48,20 @@ storiesOf('Modals', module).add(
     info: {
       source: false,
       text: `
-        #### - Usage
+        ## - Usage
         ~~~jsx
         import React from 'react'
         import { ModalContext, Modal } from 'context-react-modal'
 
-        const ModalWrapper = ({ ...params }) => {
+        const ModalWrapper = ({ ...props }) => {
           return (
-            <Modal {...params}>
-              {() => {
-                return <h1>Modal number: {params.id}</h1>
-              }}
+            <Modal {...props}>
+              {({ closeModal }) => (
+                <>
+                  <h1>Modal number: {props.id}</h1>
+                  <button onClick={closeModal}>Close</button>
+                </>
+              )}
             </Modal>
           )
         }
@@ -58,11 +70,12 @@ storiesOf('Modals', module).add(
           const { showModal } = React.useContext(ModalContext)
           React.useEffect(() => {
             showModal([
-              params => <ModalWrapper {...params} />,
-              params => <ModalWrapper {...params} />,
+              props => <ModalWrapper {...props} />,
+              props => <ModalWrapper {...props} />,
             ])
           }, [showModal])
-          return <>You can pass an array of components to a showModal function</>
+        
+          return <>You base component. Show modals in componentDidMount methoods</>
         }
         ~~~
         `,

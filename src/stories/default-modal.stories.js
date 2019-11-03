@@ -10,11 +10,18 @@ const BaseComponent = () => {
   const { showModal } = React.useContext(ModalContext)
 
   return (
-    <CommonTemplate>
+    <CommonTemplate title='Demo'>
       <Button
         onClick={() =>
-          showModal(params => (
-            <Modal {...params}>{() => <>Some modal</>}</Modal>
+          showModal(props => (
+            <Modal {...props}>
+              {({ closeModal }) => (
+                <>
+                  <h1>Some modal 2</h1>
+                  <Button onClick={closeModal}>Close modal</Button>
+                </>
+              )}
+            </Modal>
           ))
         }
       >
@@ -37,7 +44,7 @@ storiesOf('Modals', module).add(
     info: {
       source: false,
       text: `
-        #### - Usage
+        ## - Usage
         ~~~jsx
         import React from 'react'
         import { ModalContext, Modal } from 'context-react-modal'
@@ -46,13 +53,22 @@ storiesOf('Modals', module).add(
           const { showModal } = React.useContext(ModalContext);
         
           return (
-            <Button
+            <button
               onClick={() =>
-                showModal(params => <Modal {...params}>{() => <>Some modal</>}</Modal>)
+                showModal(props => (
+                  <Modal {...props}>
+                    {({ closeModal }) => (
+                      <>
+                        <h1>Some modal 2</h1>
+                        <button onClick={closeModal}>Close modal</button>
+                      </>
+                    )}
+                  </Modal>
+                ))
               }
             >
               open modal
-            </Button>
+            </button>
           );
         };
         ~~~

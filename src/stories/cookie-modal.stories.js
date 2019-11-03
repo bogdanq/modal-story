@@ -6,35 +6,39 @@ import { ModalContext, Modal } from 'context-react-modal'
 import { propTypes } from '../options/props-config'
 import { CommonTemplate } from '../templates/common-modal'
 
+const ModalWrapper = props => (
+  <Modal {...props} labelText='do not show' cookie={{ name: 'modal_1' }}>
+    {({ closeModal }) => (
+      <>
+        <h1>Some modal 1</h1>
+        <Button onClick={closeModal}>Close modal</Button>
+      </>
+    )}
+  </Modal>
+)
+
 const BaseComponent = () => {
   const { showModal } = React.useContext(ModalContext)
 
   return (
-    <CommonTemplate>
-      <Button
-        onClick={() =>
-          showModal(params => (
-            <Modal
-              {...params}
-              labelText='do not show'
-              cookie={{ name: 'modal_1' }}
-            >
-              {() => <h1>Some modal 1</h1>}
-            </Modal>
-          ))
-        }
-      >
-        open modal_1
+    <CommonTemplate title='Demo'>
+      <Button onClick={() => showModal(props => <ModalWrapper {...props} />)}>
+        open modal 1
       </Button>
       <Button
         onClick={() =>
-          showModal(params => (
+          showModal(props => (
             <Modal
-              {...params}
+              {...props}
               labelComponent={Label}
               cookie={{ name: 'modal_2' }}
             >
-              {() => <h1>Some modal 2</h1>}
+              {({ closeModal }) => (
+                <>
+                  <h1>Some modal 2</h1>
+                  <Button onClick={closeModal}>Close modal</Button>
+                </>
+              )}
             </Modal>
           ))
         }
@@ -45,10 +49,10 @@ const BaseComponent = () => {
   )
 }
 
-const Label = ({ htmlFor, toogleCookie, ...params }) => {
+const Label = ({ htmlFor, toogleCookie, ...props }) => {
   return (
     <div>
-      <input {...params} onChange={toogleCookie} type='checkbox' />
+      <input {...props} onChange={toogleCookie} type='checkbox' />
       <label htmlFor={htmlFor}>do not show (custom component)</label>
     </div>
   )
@@ -109,36 +113,35 @@ storiesOf('Modals', module).add(
     info: {
       source: false,
       text: `
-        #### - Usage
+        ## - Usage
         ~~~jsx
         import React from 'react'
         import { ModalContext, Modal } from 'context-react-modal'
+
+        const ModalWrapper = props => (
+          <Modal {...props} labelText='do not show' cookie={{ name: 'modal_1' }}>
+            {({ closeModal }) => (
+              <>
+                <h1>Some modal 1</h1>
+                <button onClick={closeModal}>Close modal</button>
+              </>
+            )}
+          </Modal>
+        )
 
         const BaseComponent = () => {
           const { showModal } = React.useContext(ModalContext)
         
           return (
             <>
-              <Button
-                onClick={() =>
-                  showModal(params => (
-                    <Modal
-                      {...params}
-                      labelText='do not show'
-                      cookie={{ name: 'modal_1' }}
-                    >
-                      {() => <h1>Some modal 1</h1>}
-                    </Modal>
-                  ))
-                }
-              >
+              <button onClick={() => showModal(props => <ModalWrapper {...props} />)}>
                 open modal 1
-              </Button>
+              </button>
             </>
           )
         }
         ~~~
-        #### - Usage with custom label
+        ## - Usage with custom label
         ~~~jsx
         import React from 'react'
         import { ModalContext, Modal } from 'context-react-modal'
@@ -147,28 +150,33 @@ storiesOf('Modals', module).add(
           const { showModal } = React.useContext(ModalContext)
         
           return (
-            <Button
+            <button
               onClick={() =>
-                showModal(params => (
+                showModal(props => (
                   <Modal
-                    {...params}
+                    {...props}
                     labelComponent={Label}
-                    cookie={{ name: 'modal_2' }}
+                    cookie={{ name: 'modal_2', maxAge: 100 * 60 * 60 }}
                   >
-                    {() => <h1>Some modal 2</h1>}
+                    {({ closeModal }) => (
+                      <>
+                        <h1>Some modal 2</h1>
+                        <button onClick={closeModal}>Close modal</button>
+                      </>
+                    )}
                   </Modal>
                 ))
               }
             >
-              open modal with custom label
-            </Button>
+              open modal
+            </button>
           )
         }
         
-        const Label = ({ htmlFor, toogleCookie, ...params }) => {
+        const Label = ({ htmlFor, toogleCookie, ...props }) => {
           return (
             <div>
-              <input {...params} onChange={toogleCookie} type='checkbox' />
+              <input {...props} onChange={toogleCookie} type='checkbox' />
               <label htmlFor={htmlFor}>do not show (custom component)</label>
             </div>
           )

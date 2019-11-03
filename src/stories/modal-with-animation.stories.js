@@ -4,10 +4,11 @@ import { storiesOf } from '@storybook/react'
 import { withInfo } from '@storybook/addon-info'
 import { ModalContext, Modal } from 'context-react-modal'
 import { propTypes } from '../options/props-config'
+import { CommonTemplate } from '../templates/common-modal'
 
-const ModalForAnimation = ({ animationName, ...params }) => {
+const ModalWithAnimation = ({ animationName, ...props }) => {
   return (
-    <Modal animationName={animationName} {...params}>
+    <Modal animationName={animationName} {...props}>
       {({ closeModal }) => (
         <div>
           <h1>Modal with animation - {animationName}</h1>
@@ -35,19 +36,19 @@ const BaseComponent = () => {
   const { showModal } = React.useContext(ModalContext)
 
   return (
-    <>
+    <CommonTemplate title='Demo'>
       {modalNames.map(animation => (
         <Button
           onClick={() =>
-            showModal(params => (
-              <ModalForAnimation {...params} animationName={animation} />
+            showModal(props => (
+              <ModalWithAnimation {...props} animationName={animation} />
             ))
           }
         >
           open modal ({animation})
         </Button>
       ))}
-    </>
+    </CommonTemplate>
   )
 }
 
@@ -76,43 +77,38 @@ storiesOf('Modals', module).add(
   {
     info: {
       text: `
-        #### - Usage 
+        ## - Usage 
         ~~~jsx
         import React from 'react'
         import { ModalContext, Modal } from 'context-react-modal'
 
-        const BaseComponent = ({ animationName }) => {
-          const { showModal } = React.useContext(ModalContext);
+        const ModalWithAnimation = ({ animationName, ...props }) => {
           return (
-            <Button
+            <Modal animationName={animationName} {...props}>
+              {({ closeModal }) => (
+                <>
+                  <h1>Modal with animation - rotate</h1>
+                  <button onClick={closeModal}>Close</button>
+                </>
+              )}
+            </Modal>
+          )
+        }
+
+        const BaseComponent = () => {
+          const { showModal } = React.useContext(ModalContext)
+          return (
+            <button
               onClick={() =>
-                showModal(params => (
-                  <ModalForAnimation {...params} animationName={animationName} />
+                showModal(props => (
+                  <ModalWithAnimation {...props} animationName="rotate" />
                 ))
               }
             >
-              open modal ({animation})
-            </Button>
+              open modal (rotate)
+            </button>
           )
-        };
-        ~~~
-        #### - You can use your custom Modal wrapper - component (ModalForAnimation)
-        ~~~jsx
-        const ModalForAnimation = ({ animationName, ...params }) => {
-          return (
-            <Modal animationName={animationName} {...params}>
-              {({ closeModal }) => (
-                <div>
-                  <h1>Modal with animation - {animationName}</h1>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum
-                  dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit
-                  amet, consectetur adipiscing elit.
-                  <Button onClick={closeModal}>Close</Button>
-                </div>
-              )}
-            </Modal>
-          );
-        };        
+        }       
         ~~~
         `,
     },
